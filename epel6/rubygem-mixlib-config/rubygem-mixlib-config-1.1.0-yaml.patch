@@ -1,0 +1,10 @@
+--- mixlib-config-1.1.0/Rakefile.orig	2010-06-08 22:52:23.657775743 -0700
++++ mixlib-config-1.1.0/Rakefile	2010-06-08 22:52:37.128278089 -0700
+@@ -41,6 +41,7 @@
+ task :default => :spec
+ 
+ require 'rake/rdoctask'
++require 'yaml'
+ Rake::RDocTask.new do |rdoc|
+   if File.exist?('VERSION.yml')
+     config = YAML.load(File.read('VERSION.yml'))
