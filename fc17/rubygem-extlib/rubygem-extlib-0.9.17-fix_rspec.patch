@@ -1,0 +1,10 @@
+--- a/extlib-0.9.17/spec/spec_helper.rb	2012-04-30 19:18:03.873935800 -0400
++++ b/extlib-0.9.17/spec/spec_helper.rb	2012-04-30 19:17:52.393933108 -0400
+@@ -1,6 +1,6 @@
+ $TESTING=true
+ require "rubygems"
+-require "spec"
++require "rspec"
+ require "yaml"
+ 
+ lib_path = File.expand_path('../lib', __FILE__)
