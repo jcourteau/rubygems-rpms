@@ -13,8 +13,6 @@ Group: Development/Languages
 License: MIT
 URL: http://github.com/brianmario/yajl-ruby
 Source0: http://rubygems.org/gems/%{gemname}-%{version}.gem
-# Patches go here
-# Patch0: such_and_such.patch
 Requires: ruby(abi) = %{rubyabi}
 Requires: ruby(rubygems)
 BuildRequires: ruby(rubygems)
@@ -43,10 +41,6 @@ gem install --local \
   -V \
   --force --rdoc \
    %{SOURCE0}
-
-# Patches go here:
-# pushd .%{geminstdir}
-# %patch0 -p1
 
 %build
 
