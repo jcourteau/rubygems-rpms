@@ -16,6 +16,7 @@ Source1: chef-client_config.rb
 # git checkout 0.10.10
 # tar czvf rubygem-chef-0.10.10.tgz spec/
 Source2: rubygem-%{gem_name}-%{version}-specs.tgz
+Patch0: rubygem-chef-0.10.10-change_json_requirement.patch
 
 Requires: ruby
 Requires: ruby(abi) = %{rubyabi}
@@ -31,7 +32,7 @@ Requires: rubygem(rest-client) >= 1.0.4
 Requires: rubygem(rest-client) < 1.7.0
 Requires: rubygem(bunny) >= 0.6.0
 Requires: rubygem(json) >= 1.4.4
-Requires: rubygem(json) <= 1.6.1
+Requires: rubygem(json) <= 1.6.5
 Requires: rubygem(yajl-ruby) >= 1.1.0
 Requires: rubygem(treetop) => 1.4.9
 Requires: rubygem(treetop) < 1.5
@@ -65,6 +66,8 @@ BuildRequires: rubygem(highline)
 BuildRequires: rubygem(ohai) >= 0.6.0
 BuildRequires: rubygem(bunny) >= 0.6.0
 BuildRequires: rubygem(moneta)
+BuildRequires: rubygem(json) >= 1.4.4
+BuildRequires: rubygem(json) <= 1.6.5
 BuildRequires: rubygem(net-ssh) => 2.2.2
 BuildRequires: rubygem(net-ssh) < 2.3
 BuildRequires: rubygem(net-ssh-multi) => 1.1
@@ -96,6 +99,10 @@ mkdir -p .%{gem_dir}
 gem install --local --install-dir .%{gem_dir} \
             --bindir .%{_bindir} \
             --force %{SOURCE0}
+# Adjust the JSON gem requirement:
+pushd .%{gem_dir}
+%patch0 -p1
+popd
 
 # Unpack our tests:
 tar zxvf %{SOURCE2}
