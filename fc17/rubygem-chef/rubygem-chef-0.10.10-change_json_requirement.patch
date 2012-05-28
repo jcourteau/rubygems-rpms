@@ -1,5 +1,5 @@
---- a/specifications/chef-0.10.10.gemspec	2012-05-13 20:19:29.976755585 -0400
-+++ b/specifications/chef-0.10.10.gemspec	2012-05-13 20:24:53.812753711 -0400
+--- a/specifications/chef.gemspec	2012-05-13 20:19:29.976755585 -0400
++++ b/specifications/chef.gemspec	2012-05-13 20:24:53.812753711 -0400
 @@ -29,7 +29,7 @@
        s.add_runtime_dependency(%q<ohai>, [">= 0.6.0"])
        s.add_runtime_dependency(%q<rest-client>, ["< 1.7.0", ">= 1.0.4"])
