@@ -155,8 +155,10 @@ popd
 /sbin/chkconfig --add chef-client || :
 
 %preun
-/sbin/service chef-client stop &>/dev/null || :
-/sbin/chkconfig --del chef-client || :
+if [ $1 -eq 0 ] ; then
+  /sbin/service chef-client stop &>/dev/null || :
+  /sbin/chkconfig --del chef-client || :
+fi
 
 %files
 %dir %{gem_instdir}

@@ -3,7 +3,7 @@
 
 %global rubyabi 1.9.1
 
-Summary: Simple ruby config mixin
+Summary: Simple ruby config mix-in
 Name: rubygem-%{gem_name}
 Version: 1.1.2
 Release: 1%{?dist}
@@ -11,7 +11,6 @@ Group: Development/Languages
 License: ASL 2.0
 URL: http://github.com/opscode/mixlib-config
 Source0: http://gems.rubyforge.org/gems/%{gem_name}-%{version}.gem
-Patch0: rubygem-mixlib-config-1.1.0-yaml.patch
 Requires: ruby
 Requires: ruby(rubygems)
 Requires: ruby(abi) = %{rubyabi}
@@ -19,13 +18,12 @@ BuildRequires: ruby
 BuildRequires: rubygems-devel
 BuildRequires: ruby(abi) = %{rubyabi}
 # Needed for check:
-BuildRequires: rubygem(rake)
 BuildRequires: rubygem(rspec)
 BuildArch: noarch
 Provides: rubygem(%{gem_name}) = %{version}
 
 %description
-A class based config mixin, similar to the one found in Chef.
+A class based config mix-in, similar to the one found in Chef.
 
 %package doc
 Summary: Documentation for %{name}
@@ -49,15 +47,11 @@ gem install -V \
 %build
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* %{buildroot}%{gem_dir}/
 
 # Shouldn't be in the gem
 rm %{buildroot}%{gem_instdir}/.gitignore
-
-%clean
-rm -rf %{buildroot}
 
 %check
 pushd .%{gem_instdir}
@@ -74,9 +68,9 @@ popd
 %{gem_libdir}
 %{gem_cache}
 %{gem_spec}
+%exclude %{gem_instdir}/spec
 
 %files doc
-%{gem_instdir}/spec
 %{gem_instdir}/features
 %doc %{gem_docdir}
 

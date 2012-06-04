@@ -3,7 +3,7 @@
 
 %global rubyabi 1.9.1
 
-Summary: Simple ruby mixin for CLI interfaces
+Summary: Simple ruby mix-in for CLI interfaces
 Name: rubygem-%{gem_name}
 Version: 1.2.2
 Release: 1%{?dist}
@@ -23,7 +23,7 @@ BuildArch: noarch
 Provides: rubygem(%{gem_name}) = %{version}
 
 %description
-A simple mixin for CLI interfaces, including option parsing.
+A simple mix-in for CLI interfaces, including option parsing.
 
 %package doc
 Summary: Documentation for %{name}
@@ -47,12 +47,8 @@ gem install -V \
 %build
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* %{buildroot}%{gem_dir}/
-
-%clean
-rm -rf %{buildroot}
 
 %check
 pushd .%{gem_instdir}
@@ -68,9 +64,9 @@ popd
 %{gem_libdir}
 %{gem_cache}
 %{gem_spec}
+%exclude %{gem_instdir}/spec
 
 %files doc
-%{gem_instdir}/spec
 %doc %{gem_docdir}
 
 %changelog

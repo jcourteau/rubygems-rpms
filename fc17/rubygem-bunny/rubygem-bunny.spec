@@ -42,6 +42,7 @@ gem install --local --install-dir .%{gem_dir} \
             --force %{SOURCE0}
 
 # clean up a bunch of un-needed files:
+# See https://github.com/ruby-amqp/bunny/issues/55
 rm -f .%{gem_instdir}/{.gitignore,.rspec,.travis.yml,.yardopts}
 
 %build
@@ -67,15 +68,17 @@ cp -a .%{gem_dir}/* \
 %doc %{gem_instdir}/LICENSE
 %doc %{gem_instdir}/README.textile
 %exclude %{gem_instdir}/Gemfile
+%exclude %{gem_instdir}/spec
+# Extraneous file, see https://github.com/ruby-amqp/bunny/issues/55
 %exclude %{gem_instdir}/bunny.gemspec
 
 %files doc
 %doc %{gem_docdir}
 %doc %{gem_instdir}/examples
-%{gem_instdir}/spec
 %doc %{gem_instdir}/Rakefile
 
 %changelog
 * Mon Apr 30 2012  <rpms@courteau.org> - 0.7.9-1
 - Initial package
+- Submitted https://github.com/ruby-amqp/bunny/issues/55 upstream to remove dot-files
 - Disabled test, requires a running rabbitmq server with a specific config

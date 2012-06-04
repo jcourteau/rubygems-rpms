@@ -5,17 +5,19 @@
 Summary: Run external commands on Unix or Windows
 Name: rubygem-%{gem_name}
 Version: 1.0.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 Group: Development/Languages
-License: Apache 2.0
+License: ASL 2.0
 URL: https://github.com/opscode/mixlib-shellout
 Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
+# See http://tickets.opscode.com/browse/CHEF-3168
 # Tests for this package are not in the gem. To update:
 # git clone https://github.com/opscode/mixlib-shellout.git && cd mixlib-shellout
 # git checkout 1.0.0
 # tar czvf rubygem-mixlib-shellout-1.0.0-specs.tgz spec/
 Source1: rubygem-%{gem_name}-%{version}-specs.tgz
 # One test doesn't take into account that /bin is a symlink in fc17
+# See http://tickets.opscode.com/browse/CHEF-3107
 Patch0: rubygem-mixlib-shellout-1.0.0-fix_test.patch
 
 Requires: ruby 
@@ -65,17 +67,21 @@ rspec -Ilib && sleep 10
 popd
 
 %files
+%doc %{gem_instdir}/README.md
+%doc %{gem_instdir}/LICENSE
 %dir %{gem_instdir}
 %{gem_libdir}
-%exclude %{gem_cache}
+%{gem_cache}
 %{gem_spec}
+%exclude %{gem_instdir}/spec
 
 %files doc
 %doc %{gem_docdir}
-%doc %{gem_instdir}/README.md
-%doc %{gem_instdir}/LICENSE
-%{gem_instdir}/spec
 
 %changelog
+* Sun Jun 3 2012 Jonas Courteau <roms@courteau.org> - 10.0.0-2
+- exclude specs from final package
+- link to upstream bug reports for missing specs, broken test
+
 * Sat May 12 2012  Jonas Courteau <rpms@courteau.org> - 1.0.0-1
 - Initial package

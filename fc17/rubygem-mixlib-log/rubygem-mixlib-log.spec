@@ -3,7 +3,7 @@
 
 %global rubyabi 1.9.1
 
-Summary: Ruby mixin for log functionality
+Summary: Ruby mix-in for log functionality
 Name: rubygem-%{gem_name}
 Version: 1.3.0
 Release: 1%{?dist}
@@ -11,7 +11,8 @@ Group: Development/Languages
 License: ASL 2.0
 URL: http://github.com/opscode/mixlib-log
 Source0: http://gems.rubyforge.org/gems/%{gem_name}-%{version}.gem
-# Unit tests are no longer in the gem.  Download seperately:
+# See http://tickets.opscode.com/browse/CHEF-3169
+# Download tests seperately:
 # git clone http://github.com/opscode/mixlib-log.git && cd mixlib-log
 # git checkout 1.3.0
 # tar -czf rubygem-mixlib-log-1.3.0-specs.tgz spec/
@@ -29,7 +30,7 @@ BuildArch: noarch
 Provides: rubygem(%{gem_name}) = %{version}
 
 %description
-A gem that provides a simple mixin for log functionality.
+A gem that provides a simple mix-in for log functionality.
 
 %package doc
 Summary: Documentation for %{name}
@@ -54,12 +55,8 @@ gem install -V \
 %build
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* %{buildroot}%{gem_dir}/
-
-%clean
-rm -rf %{buildroot}
 
 %check
 cp -pr spec/ %{buildroot}%{gem_instdir}
@@ -75,9 +72,9 @@ popd
 %{gem_libdir}
 %{gem_cache}
 %{gem_spec}
+%exclude %{gem_instdir}/spec
 
 %files doc
-%{gem_instdir}/spec
 %doc %{gem_docdir}
 
 %changelog

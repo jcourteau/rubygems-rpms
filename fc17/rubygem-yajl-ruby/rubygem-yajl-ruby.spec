@@ -46,7 +46,6 @@ gem install --local \
 %build
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
@@ -60,8 +59,10 @@ rm %{buildroot}%{gem_instdir}/.gitignore \
 # Move C extension to extdir:
 mkdir -p %{buildroot}%{gem_extdir}/lib/yajl
 mv %{buildroot}%{gem_instdir}/lib/yajl/yajl.so %{buildroot}%{gem_extdir}/lib/yajl/
-%clean
-rm -rf %{buildroot}
+
+# Fix permissions
+# https://github.com/brianmario/yajl-ruby/issues/103
+chmod -x %{buildroot}%{gem_instdir}/benchmark/subjects/unicode.json
 
 %check
 pushd .%{gem_instdir}
@@ -80,13 +81,14 @@ popd
 %{gem_instdir}/tasks
 %{gem_cache}
 %{gem_spec}
+%exclude %{gem_instdir}/spec
+# https://github.com/brianmario/yajl-ruby/issues/103
+%exclude %{gem_instdir}/.rspec
 
 %files doc
 %doc %{gem_docdir}
 %{gem_instdir}/Rakefile
-%{gem_instdir}/spec
 %{gem_instdir}/examples
-%{gem_instdir}/.rspec
 
 %changelog
 * Mon Apr 30 2012  <rpms@courteau.org> - 1.1.0-1

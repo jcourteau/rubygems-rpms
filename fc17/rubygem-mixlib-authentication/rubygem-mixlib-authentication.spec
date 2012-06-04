@@ -55,12 +55,8 @@ popd
 %build
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* %{buildroot}%{gem_dir}/
-
-%clean
-rm -rf %{buildroot}
 
 %check
 pushd .%{gem_instdir}
@@ -75,10 +71,10 @@ popd
 %{gem_libdir}
 %{gem_cache}
 %{gem_spec}
+%exclude %{gem_instdir}/spec
 
 %files doc
 %{gem_instdir}/Rakefile
-%{gem_instdir}/spec
 %doc %{gem_docdir}
 
 %changelog

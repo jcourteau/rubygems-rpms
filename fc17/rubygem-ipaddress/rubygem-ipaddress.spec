@@ -23,7 +23,7 @@ Provides: rubygem(%{gem_name}) = %{version}
 
 %description
 IPAddress is a Ruby library designed to make manipulation
-of IPv4 and IPv6 addresses both powerful and simple. It mantains
+of IPv4 and IPv6 addresses both powerful and simple. It maintains
 a layer of compatibility with Ruby's own IPAddr, while 
 addressing many of its issues.
 
@@ -44,15 +44,16 @@ mkdir -p .%{gem_dir}
 gem install --local --install-dir .%{gem_dir} \
             --force %{SOURCE0}
 
+# Remove un-needed file
+# See https://github.com/bluemonk/ipaddress/issues/23
+rm .%{gem_instdir}/.document
+
 %build
 
 %install
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
-
-%clean
-rm -rf %{buildroot}
 
 %check
 pushd .%{gem_instdir}
@@ -68,14 +69,14 @@ popd
 %doc %{gem_instdir}/LICENSE
 %doc %{gem_instdir}/VERSION
 %doc %{gem_instdir}/CHANGELOG.rdoc
+%exclude %{gem_instdir}/test
+%exclude %{gem_instdir}/%{gem_name}.gemspec
 
 %files doc
 %doc %{gem_docdir}
-%{gem_instdir}/test
 %{gem_instdir}/Rakefile
-%{gem_instdir}/%{gem_name}.gemspec
-%{gem_instdir}/.document
 
 %changelog
 * Mon Apr 30 2012 Jonas Courteau <rpms@courteau.org> - 0.8.0-1
 - Initial package
+- Submitted https://github.com/bluemonk/ipaddress/issues/23 upstream to remove extra file from gem

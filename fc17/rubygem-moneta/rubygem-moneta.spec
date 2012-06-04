@@ -7,8 +7,8 @@ Name: rubygem-%{gem_name}
 Version: 0.6.0
 Release: 1%{?dist}
 Group: Development/Languages
-License: GPLv2+ or Ruby
-URL: http://www.yehudakatz.com
+License: MIT
+URL: https://github.com/wycats/moneta
 Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
 Requires: ruby 
 Requires: ruby(abi) = %{rubyabi}
@@ -21,7 +21,6 @@ Provides: rubygem(%{gem_name}) = %{version}
 
 %description
 A unified interface to key/value stores
-
 
 %package doc
 Summary: Documentation for %{name}
@@ -37,6 +36,9 @@ Documentation for %{name}
 mkdir -p .%{gem_dir}
 gem install --local --install-dir .%{gem_dir} \
             --force %{SOURCE0}
+
+# Unneeded file
+rm .%{gem_instdir}/TODO
 
 %build
 
@@ -56,10 +58,9 @@ cp -a .%{gem_dir}/* \
 
 %files doc
 %doc %{gem_docdir}
-%doc %{gem_instdir}/TODO
 %{gem_instdir}/Rakefile
 
 %changelog
 * Tue May 01 2012  <rpms@courteau.org> - 0.6.0-1
-- not including tests at this time (not in the gem, and they have complicated requirements)
 - Initial package
+- not including tests at this time (not in the gem, and they have complicated requirements)

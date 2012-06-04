@@ -9,7 +9,7 @@ Version: 1.1
 Release: 1%{?dist}
 Group: Development/Languages
 License: MIT
-URL: http://github.com/net-ssh/net-ssh
+URL: http://github.com/net-ssh/net-ssh-multi
 Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
 Requires: ruby
 Requires: ruby(abi) = %{rubyabi}
@@ -49,14 +49,9 @@ gem install --local \
 %build
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
-
-
-%clean
-rm -rf %{buildroot}
 
 %check
 pushd %{buildroot}%{gem_instdir}
@@ -64,17 +59,17 @@ ruby -Ilib -Itest -rrubygems test/test_all.rb
 popd
 
 %files
-%doc %{gem_instdir}/README.rdoc
 %dir %{gem_instdir}
+%doc %{gem_instdir}/README.rdoc
 %{gem_libdir}
 %{gem_cache}
 %{gem_spec}
+%exclude %{gem_instdir}/test
 
 %files doc
 %doc %{gem_docdir}
 %doc %{gem_instdir}/CHANGELOG.rdoc
 %{gem_instdir}/Rakefile
-%{gem_instdir}/test
 
 %changelog
 * Sat Apr 14 2012  <rpms@courteau.org> - 1.1-1

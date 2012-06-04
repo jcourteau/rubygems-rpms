@@ -6,12 +6,11 @@
 Summary: Profiles your system and emits JSON
 Name: rubygem-%{gem_name}
 Version: 0.6.12
-Release: 1%{?dist}
+Release: 2%{?dist}
 Group: Development/Languages
 License: ASL 2.0 
-URL: http://wiki.opscode.com/display/ohai
-Source0: http://gems.rubyforge.org/gems/%{gem_name}-%{version}.gem
-Patch0: rubygem-ohai-0.6.12-disable_ohai275.patch
+URL: http://wiki.opscode.com/display/chef/Ohai
+Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
 Requires: ruby
 Requires: ruby(rubygems)
 Requires: ruby(abi) = %{rubyabi}
@@ -62,14 +61,10 @@ gem install -V \
   --install-dir $(pwd)/%{gem_dir} \
   --force --rdoc \
   %{SOURCE0}
-pushd .%{gem_instdir}
-%patch0 -p2
-popd
 
 %build
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* %{buildroot}%{gem_dir}/
 
@@ -84,35 +79,36 @@ rm -rf {%{buildroot}%{gem_dir}/docs
 find %{buildroot}%{gem_instdir}/bin -type f | \
   xargs -n 1 sed -i -e 's"^#!/usr/bin/env ruby"#!/usr/bin/ruby"'
 
-%clean
-rm -rf %{buildroot}
-
 %check
 pushd .%{gem_instdir}
-# Occasionally fails with "undefined method `rfc2822' for nil:NilClass" during
-# mock. Unsure why - disable for now.
-#sed -i 's^Time.should_receive(:now)^^' \
-#  spec/ohai/plugins/ohai_time_spec.rb
-rspec -Ilib spec/
+# Workaround for test that expects a UTF-8 encoding.
+# Upstream ticket: http://tickets.opscode.com/browse/OHAI-379
+ruby -EUTF-8 %{_bindir}/rspec -Ilib spec/
 popd
 
 %files
+%dir %{gem_instdir}
 %doc %{gem_instdir}/LICENSE
 %doc %{gem_instdir}/README.rdoc
 %{_bindir}/ohai
-%dir %{gem_instdir}
 %{gem_libdir}
 %{gem_instdir}/bin
 %{gem_cache}
 %{gem_spec}
 %{_mandir}/man1/%{gem_name}.1.gz
+%exclude %{gem_instdir}/spec
 
 %files doc
 %{gem_instdir}/Rakefile
-%{gem_instdir}/spec
-%{gem_docdir}
+%doc %{gem_docdir}
 
 %changelog
+* Sun Jun 3 2012 Jonas Courteau <rpms@courteau.org> - 0.6.12-2
+- Re-enabled all tests
+- Added explicit external encoding for tests, pending http://tickets.opscode.com/browse/OHAI-379
+- Exclude tests from rpm
+- Updated URL and source0
+
 * Sun Apr 8 2012 Jonas Courteau <rpms@courteau.org> - 0.6.12-1
 - Disable spec testing OHAI-275; fails due to character set under mock
 - Re-enabled all other tests
