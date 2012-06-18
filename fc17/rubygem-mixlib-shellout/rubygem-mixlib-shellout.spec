@@ -5,7 +5,7 @@
 Summary: Run external commands on Unix or Windows
 Name: rubygem-%{gem_name}
 Version: 1.0.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 Group: Development/Languages
 License: ASL 2.0
 URL: https://github.com/opscode/mixlib-shellout
@@ -48,10 +48,6 @@ mkdir -p .%{gem_dir}
 gem install --local --install-dir .%{gem_dir} \
             --force %{SOURCE0}
 
-# Unpack our tests:
-tar zxvf %{SOURCE1}
-%patch0 -p2 -b .fix_tests
-
 %build
 
 %install
@@ -60,9 +56,10 @@ cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
 
 %check
-cp -pr spec/ %{buildroot}%{gem_instdir}
-pushd %{buildroot}%{gem_instdir}
-# One of the tests involves a fork that may not finish before mock
+pushd .%{gem_instdir}
+tar zxvf %{SOURCE1}
+cat %{PATCH0} | patch -p2
+# One of the tests involves a fork && sleep 10 that may not finish before mock
 rspec -Ilib && sleep 10
 popd
 
@@ -71,7 +68,7 @@ popd
 %doc %{gem_instdir}/LICENSE
 %dir %{gem_instdir}
 %{gem_libdir}
-%{gem_cache}
+%exclude %{gem_cache}
 %{gem_spec}
 %exclude %{gem_instdir}/spec
 
@@ -79,7 +76,11 @@ popd
 %doc %{gem_docdir}
 
 %changelog
-* Sun Jun 3 2012 Jonas Courteau <roms@courteau.org> - 10.0.0-2
+* Sun Jun 17 2012 Jonas Courteau <rpms@courteau.org> - 1.0.0-3
+- move all test-related operations into %check
+- excluding gem_cache
+
+* Sun Jun 3 2012 Jonas Courteau <rpms@courteau.org> - 1.0.0-2
 - exclude specs from final package
 - link to upstream bug reports for missing specs, broken test
 

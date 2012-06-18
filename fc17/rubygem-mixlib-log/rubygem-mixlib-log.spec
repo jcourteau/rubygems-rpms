@@ -43,7 +43,6 @@ This package contains documentation for %{name}.
 
 %prep
 %setup -q -c -T
-tar xzf %{SOURCE1}
 
 mkdir -p .%{gem_dir}
 gem install -V \
@@ -59,8 +58,8 @@ mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* %{buildroot}%{gem_dir}/
 
 %check
-cp -pr spec/ %{buildroot}%{gem_instdir}
-pushd %{buildroot}%{gem_instdir}
+pushd .%{gem_instdir}
+tar xzvf %{SOURCE1}
 rspec -Ilib spec/mixlib/log_spec.rb
 popd
 
@@ -70,7 +69,7 @@ popd
 %doc %{gem_instdir}/NOTICE
 %dir %{gem_instdir}
 %{gem_libdir}
-%{gem_cache}
+%exclude %{gem_cache}
 %{gem_spec}
 %exclude %{gem_instdir}/spec
 
