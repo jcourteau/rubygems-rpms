@@ -77,7 +77,7 @@ popd
 
 %changelog
 * Sun Jun 17 2012 Jonas Courteau <rpms@courteau.org> - 1.0.0-3
-- move all test-related operations into %check
+- move all test-related operations into check
 - excluding gem_cache
 
 * Sun Jun 3 2012 Jonas Courteau <rpms@courteau.org> - 1.0.0-2
